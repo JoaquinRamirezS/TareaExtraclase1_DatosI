@@ -40,8 +40,10 @@ class MarcoServidor extends JFrame implements Runnable {
                 ip = datos_recibidos.getIp();
                 mensaje = datos_recibidos.getMensaje();
 
-                // Enviar mensaje a todos los clientes conectados (broadcast)
-                areatexto.append("\n" + nick + " : " + mensaje + " para " + ip);
+                setBackground(new Color(173, 216, 230)); 
+
+
+                areatexto.append("\n" + nick + " : " + mensaje );
 
                 misocket.close();
             }
