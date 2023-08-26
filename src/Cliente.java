@@ -1,9 +1,23 @@
+/**
+ * Instituto Tecnológico de Costa Rica
+ * Área de Ingenieria en Computadores
+ * CE-1103 Estructuras y Algoritmos de Datos I
+ * Prof:Luis Barboza Artavia
+ * Estudiante:Joaquín Ramírez Sequeira
+ * II Semestre,2023
+ */
+
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
 import java.net.*;
 
+/**
+ * Clase principal que inicia el cliente de chat.
+ * Se pretende tener una comunicación entre varios clientes mediante el server
+ */
 public class Cliente {
 
     public static void main(String[] args) {
@@ -12,8 +26,14 @@ public class Cliente {
     }
 }
 
+/**
+ * Clase que representa la ventana del cliente de chat.
+ */
 class MarcoCliente extends JFrame {
 
+    /**
+     * Constructor que inicializa la ventana del cliente.
+     */
     public MarcoCliente() {
         setBounds(600, 300, 280, 350);
         LaminaMarcoCliente milamina = new LaminaMarcoCliente();
@@ -22,6 +42,9 @@ class MarcoCliente extends JFrame {
     }
 }
 
+/**
+ * Clase que representa la interfaz gráfica del cliente de chat.
+ */
 class LaminaMarcoCliente extends JPanel {
 
     private JTextField campo1, nick;
@@ -29,6 +52,9 @@ class LaminaMarcoCliente extends JPanel {
     private JTextArea campochat;
     private int port;
 
+    /**
+     * Constructor que inicializa la interfaz gráfica del cliente.
+     */
     public LaminaMarcoCliente() {
         nick = new JTextField(10);
         add(nick);
@@ -50,12 +76,15 @@ class LaminaMarcoCliente extends JPanel {
         port = findAvailablePort();
         campochat.append("Cliente escuchando en el puerto: " + port + "\n");
 
-        setBackground(new Color(173, 216, 230)); 
+        setBackground(new Color(173, 216, 230));
 
         Thread hilo = new Thread(new RecibeMensajes());
         hilo.start();
     }
 
+    /**
+     * Clase interna que maneja el evento de enviar mensajes.
+     */
     private class EnviaTexto implements ActionListener {
         public void actionPerformed(ActionEvent e) {
             try {
@@ -74,6 +103,9 @@ class LaminaMarcoCliente extends JPanel {
         }
     }
 
+    /**
+     * Clase interna que maneja la recepción de mensajes en segundo plano.
+     */
     private class RecibeMensajes implements Runnable {
         public void run() {
             try {
@@ -92,6 +124,10 @@ class LaminaMarcoCliente extends JPanel {
         }
     }
 
+    /**
+     * Método para encontrar un puerto disponible dinámicamente.
+     * @return Puerto disponible.
+     */
     private int findAvailablePort() {
         try (ServerSocket socket = new ServerSocket(0)) {
             return socket.getLocalPort();
