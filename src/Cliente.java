@@ -79,11 +79,28 @@ class LaminaMarcoCliente extends JPanel {
 
                 while (true) {
                     Socket socket = cliente.accept();
-                    ObjectInputStream flujoentrada = new ObjectInputStream(socket.getInputStream());
-                    DatosEnviados paqueterecibido = (DatosEnviados) flujoentrada.readObject();
-                    campochat.append("\n" + paqueterecibido.getNick() + " : " + paqueterecibido.getMensaje());
-                    socket.close();
+                    Thread hiloMensaje = new Thread(new ManejaMensaje(socket));
+                    hiloMensaje.start();
                 }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private class ManejaMensaje implements Runnable {
+        private Socket socket;
+
+        public ManejaMensaje(Socket socket) {
+            this.socket = socket;
+        }
+
+        public void run() {
+            try {
+                ObjectInputStream flujoentrada = new ObjectInputStream(socket.getInputStream());
+                DatosEnviados paqueterecibido = (DatosEnviados) flujoentrada.readObject();
+                campochat.append("\n" + paqueterecibido.getNick() + " : " + paqueterecibido.getMensaje());
+                socket.close();
             } catch (IOException | ClassNotFoundException e) {
                 e.printStackTrace();
             }
@@ -99,3 +116,4 @@ class LaminaMarcoCliente extends JPanel {
         }
     }
 }
+
